@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Questionnaire Collector', others: [1,3,5,7,9] });
+  res.render('index', { title: 'Questionnaire Collector' });
 };
