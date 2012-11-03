@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/ui/themes/base/jquery-ui.css'>
+    <script type="text/javascript" src="javascripts/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="ui/jquery-ui-1.9.1.custom.min.js"></script>
+    <script>
+	    $(function() {
+	        $( "#tabs" ).tabs({
+	            beforeLoad: function( event, ui ) {
+	                ui.jqXHR.error(function() {
+	                    ui.panel.html(
+	                        "Couldn't load this tab. We'll try to fix this as soon as possible. " +
+	                        "If this wouldn't be a demo." );
+	                });
+	            }
+	        });
+	    });
+    </script>
+    
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <div id="tabs">
+	    <ul>
+	        <li><a href="ajax/content1.html">Collect Questions</a></li>
+	        <li><a href="ajax/content2.html">Questionnaires</a></li>
+	        <li><a href="ajax/content3-slow.php">Administration</a></li>
+	    </ul>
+	</div>
+
+  </body>
+</html>
