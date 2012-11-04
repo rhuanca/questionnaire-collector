@@ -3,6 +3,11 @@
 <script type="text/javascript" src="jwysiwyg/jquery.wysiwyg.js"></script>
 
 <script>
+
+	function focusQuestionField(){
+		// $('#wysiwyg').wysiwyg('focus'); does not work
+		  $("#wysiwygIFrame")[0].contentWindow.focus();
+	}
     $(function() {
     	//
     	// Intialize GUI
@@ -15,27 +20,25 @@
 		  
 		  $('#add-question').click(function() {
 				var question = $('#wysiwyg').val();
-				
 				$.ajax({
 					type: "POST",
 					url: "/collect/question",
-					data: JSON.stringify({question: question}),
-					contentType: "application/json; charset=utf-8",
+					data: {'question': question},
 					dataType: "json",
 					success: function(data) {
-						alert("question added...");
+						alert("question added..."+ data);
 					},
 					error: function(err) {
 						var msg = 'Status: ' + err.status + ': ' + err.responseText;
 						alert(msg);
+						focusQuestionField();
 					}
 				});
 				return false;
 			});
 		  
 		  // Init focus for page
-		  // $('#wysiwyg').wysiwyg('focus'); does not work
-		  $("#wysiwygIFrame")[0].contentWindow.focus();
+		  focusQuestionField();
     });
 </script>
    
