@@ -39,3 +39,20 @@ app.post('/collect/question', collect.addQuestion);
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+
+//
+// Initializing mongodb
+//
+
+var mongo = require('mongodb'),
+Server = mongo.Server,
+Db = mongo.Db;
+
+var db = new Db('questionnaire', new Server('localhost', 27017, {auto_reconnect: true}));
+
+db.open(function(err, db) {
+if(!err) {
+  console.log("We are connected");
+}
+});
+

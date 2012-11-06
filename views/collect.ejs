@@ -2,12 +2,30 @@
 <link rel="stylesheet" href="/jwysiwyg/jquery.wysiwyg.css" type="text/css" />
 <script type="text/javascript" src="jwysiwyg/jquery.wysiwyg.js"></script>
 
+<style>
+	.question-label 
+	{
+		vertical-align: top;
+	}
+</style>
 <script>
 
+	function updateAnswerType() {
+		var answerType = $('#answerType').val();
+		if(answerType == "Text") {
+			$('#answerTypeDiv').html("<i>A text area will be displayed in the questionnaire.</i>");	
+		} else if(answerType == "Multiple Choice") {
+			$('#answerTypeDiv').html("oops 1");
+		} else if(answerType == "Checkboxes") {
+			$('#answerTypeDiv').html("oops 2");
+		}
+	}
+	
 	function focusQuestionField(){
 		// $('#wysiwyg').wysiwyg('focus'); does not work
 		  $("#wysiwygIFrame")[0].contentWindow.focus();
 	}
+	
     $(function() {
     	//
     	// Intialize GUI
@@ -39,15 +57,34 @@
 		  
 		  // Init focus for page
 		  focusQuestionField();
+		  updateAnswerType();
     });
 </script>
-   
-<h3>Question</h3>
-<div>
-	<textarea name="wysiwyg" id="wysiwyg" rows="5" cols="103"></textarea>
-</div>
+<table>
+	<tr>
+		<td class="question-label"><b>Question</b></td>
+		<td>
+			<div>
+				<textarea name="wysiwyg" id="wysiwyg" rows="5" cols="103"></textarea>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="question-label"><b>Answer</b></td>
+		<td>
+			<select id="answerType" onchange="updateAnswerType()">
+				<option>Text</option>
+				<option>Multiple Choice</option>
+				<option>Checkboxes</option>
+			</select>
+			<br/><br/>
+			<div id="answerTypeDiv">
+				
+			</div>
+		</td>
+	</tr>
+</table>
 
-<h3>Answer</h3>
 <h3>Area</h3>
 <h3>Area</h3>
 <a id="add-question" href="#">Submit Question</a>
