@@ -9,36 +9,28 @@
 	}
 </style>
 <script>
-
-	function addPlusToLastOption(){
-		var lastInput = null;
-		$("#addAnswertOption").remove();
-		
-		$(':input', '#answerTypeDiv').each(function() {
-            lastInput = this;
-        });
-        
-        if(lastInput!=null) {
-        	$(lastInput).after("<a id='addAnswertOption' href='#'>Add Option</a>");	
-        } 
-        
-        $("#addAnswertOption").click(addAnswerOption);
-        return false;
+	
+	function appendAnswerText(){
+		$('#answerTypeDiv').append("<textarea rows='3' cols='103' disabled='true'>To be filled by the applicant.</textarea><br/>");
+		$('#answerTypeDiv').append("<textarea id='textAnswer' rows='5' cols='103' disabled='true'></textarea>");
+		$('#textAnswer').wysiwyg();
 	}
 	
-	function addAnswerOption(){
-		$('#answerTypeDiv').append('Option: <input id="answerOption"/><br/>');
-		addPlusToLastOption();
+	function appendAnswerOption(){
+		var optionInput = "Option: <input name'option' /> <input name='answer' type='radio'>The answer?";
+		var addOptionLink = "<a id='addAnswertOption' href='#'>Add Option</a>";
+		$("#addAnswertOption").remove();
+		$('#answerTypeDiv').append(optionInput+"&nbsp;&nbsp;"+addOptionLink+"<br/>");
+		$("#addAnswertOption").click(appendAnswerOption);
 	}
 
 	function updateAnswerType() {
 		var answerType = $('#answerType').val();
+		$('#answerTypeDiv').html("");
 		if(answerType == "Text") {
-			$('#answerTypeDiv').html("<i>A text area will be displayed in the questionnaire.</i>");	
+			appendAnswerText();
 		} else if(answerType == "Multiple Choice") {
-			$('#answerTypeDiv').html("");
-			addAnswerOption();
-			
+			appendAnswerOption();
 		} 
 	}
 	
@@ -86,7 +78,7 @@
 		<td class="question-label"><b>Question</b></td>
 		<td>
 			<div>
-				<textarea name="wysiwyg" id="wysiwyg" rows="5" cols="103"></textarea>
+				<textarea id="wysiwyg" rows="5" cols="103"></textarea>
 			</div>
 		</td>
 	</tr>
