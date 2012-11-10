@@ -1,5 +1,5 @@
 
-/*
+/**
  * collect.
  */
 
@@ -8,14 +8,16 @@ exports.list = function(req, res){
 };
 
 exports.addQuestion = function(req, res){
-
-	var question = { 'question': req.body.question };
+	
+	console.log("About to create a question");
+	
+	var question = { 'question': req.body };
 
 	db.collection('questions', function(err, collection) {
 		collection.insert(question);
 	});	
 	
-	res.send('Question added :'+question.question + ".");
+	res.send('Question added :'+question + ".");
 };
 
 

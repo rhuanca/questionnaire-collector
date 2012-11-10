@@ -48,7 +48,7 @@ var mongo = require('mongodb'),
 Server = mongo.Server,
 Db = mongo.Db;
 
-var db = new Db('questionnaire', new Server('localhost', 27017, {auto_reconnect: true}));
+db = new Db('questionnaire', new Server('localhost', 27017, {auto_reconnect: true}));
 
 db.open(function(err, db) {
 if(!err) {

@@ -9,24 +9,44 @@
 	}
 </style>
 <script>
+
+	function GUID()
+	{
+	    var S4 = function ()
+	    {
+	        return Math.floor(
+	                Math.random() * 0x10000 /* 65536 */
+	            ).toString(16);
+	    };
+	
+	    return (
+	            S4() + S4() + "-" +
+	            S4() + "-" +
+	            S4() + "-" +
+	            S4() + "-" +
+	            S4() + S4() + S4()
+	        );
+	}
 	
 	function appendAnswerText(){
 		$('#answerTypeDiv').append("<textarea rows='3' cols='103' disabled='true'>To be filled by the applicant.</textarea><br/>");
-		$('#answerTypeDiv').append("<textarea id='textAnswer' rows='5' cols='103' disabled='true'></textarea>");
+		$('#answerTypeDiv').append("<textarea name='textAnswer' id='textAnswer' rows='5' cols='103' disabled='true'></textarea>");
 		$('#textAnswer').wysiwyg();
 	}
 	
 	function appendAnswerOption(){
-		var optionInput = "Option: <input name'option' /> <input name='answer' type='radio'>The answer?";
+		var guid = GUID();
+		var optionInput = "Option: <input name='answerOption-"+guid+"' /> <label><input name='iscorrect' id='isAnswerOptionCorrect-"+guid+"' type='radio'/> The answer?</label>";
 		var addOptionLink = "<a id='addAnswertOption' href='#'>Add Option</a>";
 		$("#addAnswertOption").remove();
 		$('#answerTypeDiv').append(optionInput+"&nbsp;&nbsp;"+addOptionLink+"<br/>");
 		$("#addAnswertOption").click(appendAnswerOption);
 	}
 
-	function updateAnswerType() {
-		var answerType = $('#answerType').val();
+	function updateQuestionType() {
+		var answerType = $('#questionType').val();
 		$('#answerTypeDiv').html("");
+
 		if(answerType == "Text") {
 			appendAnswerText();
 		} else if(answerType == "Multiple Choice") {
@@ -36,41 +56,73 @@
 	
 	function focusQuestionField(){
 		// $('#wysiwyg').wysiwyg('focus'); does not work
-		  $("#wysiwygIFrame")[0].contentWindow.focus();
+		$("#textQuestionIFrame")[0].contentWindow.focus();
+	}
+	
+	
+	function submitQuestion() {
+		// get parameter values.
+		var type = $("select[name=questionType]").val();
+		var question = $('textarea[name=textQuestion]').val();
+		var textAnswer = $('textarea[name=textAnswer]').val();
+		var answerOptionsArray = $(":input[name^=answerOption]");
+		var answerOptions = [];
+		for(var i=0; i<answerOptionsArray.length; i++) {
+			var tempId = $(answerOptionsArray[i]).attr('name');
+			var guid = tempId.substring(13);
+			var textOption = $(answerOptionsArray[i]).val();
+			var isCorrect = $("#isAnswerOptionCorrect-"+guid).is(':checked');;
+			answerOptions[i] = {
+				textOption:textOption,
+				isCorrect:isCorrect
+			};
+		}
+		
+		// build data for ajax request
+		var data = {};
+		data.questionText = question;
+		data.questionType = type; 
+		if(type=="Text") {
+			data.textAnswer = textAnswer;
+		} 
+		else if(type=="Multiple Choice") {
+			data.answerOptions = answerOptions;
+		}
+		
+		alert("before post...");
+		$.ajax({
+			type: "POST",
+			url: "/collect/question",
+			data: data,
+			dataType: "json",
+			success: function(data) {
+				alert("question added..."+ data);
+			},
+			error: function(err) {
+				var msg = 'Status: ' + err.status + ': ' + err.responseText;
+				alert(msg);
+				focusQuestionField();
+			}
+		});
 	}
 	
     $(function() {
     	//
     	// Intialize GUI
     	//
-        $('#wysiwyg').wysiwyg();
+        $('#textQuestion').wysiwyg();
 		  
-		  //
-		  // Intialize Events
-		  //
-		  
-		  $('#add-question').click(function() {
-				var question = $('#wysiwyg').val();
-				$.ajax({
-					type: "POST",
-					url: "/collect/question",
-					data: {'question': question},
-					dataType: "json",
-					success: function(data) {
-						alert("question added..."+ data);
-					},
-					error: function(err) {
-						var msg = 'Status: ' + err.status + ': ' + err.responseText;
-						alert(msg);
-						focusQuestionField();
-					}
-				});
-				return false;
-			});
-		  
-		  // Init focus for page
-		  focusQuestionField();
-		  updateAnswerType();
+		//
+		// Intialize Events
+		//
+		$('#add-question').click(function() {
+			submitQuestion();
+			return false;
+		});
+		 
+		// Init focus for page
+		focusQuestionField();
+		updateQuestionType();
     });
 </script>
 <table>
@@ -78,14 +130,14 @@
 		<td class="question-label"><b>Question</b></td>
 		<td>
 			<div>
-				<textarea id="wysiwyg" rows="5" cols="103"></textarea>
+				<textarea name="textQuestion" id="textQuestion" rows="5" cols="103"></textarea>
 			</div>
 		</td>
 	</tr>
 	<tr>
 		<td class="question-label"><b>Answer</b></td>
 		<td>
-			<select id="answerType" onchange="updateAnswerType()">
+			<select name="questionType" id="questionType" onchange="updateQuestionType()">
 				<option>Text</option>
 				<option>Multiple Choice</option>
 			</select>
@@ -96,7 +148,7 @@
 	<tr>
 		<td class="question-label"><b>Area</b></td>
 		<td>
-			<select id="answerType" onchange="updateAnswerType()">
+			<select name="questionArea">
 				<option>General Programming</option>
 				<option>Desktop Development</option>
 				<option>Web Development</option>
@@ -108,7 +160,7 @@
 	<tr>
 		<td class="question-label"><b>Level</b></td>
 		<td>
-			<select id="answerType" onchange="updateAnswerType()">
+			<select name="questionLevel">
 				<option>Basic</option>
 				<option>Intermediate</option>
 				<option>Advanced</option>
