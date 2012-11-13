@@ -89,14 +89,14 @@
 			data.answerOptions = answerOptions;
 		}
 		
-		alert("before post...");
 		$.ajax({
 			type: "POST",
 			url: "/collect/question",
-			data: data,
+			data: JSON.stringify(data),
 			dataType: "json",
+			contentType: "application/json; charset=utf-8",
 			success: function(data) {
-				alert("question added..."+ data);
+				alert("Question added successfully");
 			},
 			error: function(err) {
 				var msg = 'Status: ' + err.status + ': ' + err.responseText;
