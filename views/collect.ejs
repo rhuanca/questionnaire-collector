@@ -9,25 +9,6 @@
 	}
 </style>
 <script>
-
-	function GUID()
-	{
-	    var S4 = function ()
-	    {
-	        return Math.floor(
-	                Math.random() * 0x10000 /* 65536 */
-	            ).toString(16);
-	    };
-	
-	    return (
-	            S4() + S4() + "-" +
-	            S4() + "-" +
-	            S4() + "-" +
-	            S4() + "-" +
-	            S4() + S4() + S4()
-	        );
-	}
-	
 	function appendAnswerText(){
 		$('#answerTypeDiv').append("<textarea rows='3' cols='103' disabled='true'>To be filled by the applicant.</textarea><br/>");
 		$('#answerTypeDiv').append("<textarea name='textAnswer' id='textAnswer' rows='5' cols='103' disabled='true'></textarea>");
@@ -44,7 +25,7 @@
 	}
 
 	function updateQuestionType() {
-		var answerType = $('#questionType').val();
+		var answerType = $('input[name=questionType]:checked').val();
 		$('#answerTypeDiv').html("");
 
 		if(answerType == "Text") {
@@ -59,10 +40,16 @@
 		$("#textQuestionIFrame")[0].contentWindow.focus();
 	}
 	
+	function updateId(data){
+		$("#questionIdText").html(data._id);
+		$("input[name=questionId]").val(data._id);
+		
+	}
 	
 	function submitQuestion() {
 		// get parameter values.
-		var type = $("select[name=questionType]").val();
+		var questionId = $("input[name=questionId]").val();
+		var type = $("input[name=questionType]:checked").val();
 		var question = $('textarea[name=textQuestion]').val();
 		var textAnswer = $('textarea[name=textAnswer]').val();
 		var answerOptionsArray = $(":input[name^=answerOption]");
@@ -96,7 +83,8 @@
 			dataType: "json",
 			contentType: "application/json; charset=utf-8",
 			success: function(data) {
-				alert("Question added successfully");
+				$.easyNotification("Question added successfully");
+				updateId(data);
 			},
 			error: function(err) {
 				var msg = 'Status: ' + err.status + ': ' + err.responseText;
@@ -127,6 +115,15 @@
 </script>
 <table>
 	<tr>
+		<td class="question-label"><b>Id</b></td>
+		<td>
+			<div>
+				<div id="questionIdText">Not Available</div>
+				<input name="questionId" value="" type="hidden"/>
+			</div>
+		</td>
+	</tr>
+	<tr>
 		<td class="question-label"><b>Question</b></td>
 		<td>
 			<div>
@@ -137,10 +134,8 @@
 	<tr>
 		<td class="question-label"><b>Answer</b></td>
 		<td>
-			<select name="questionType" id="questionType" onchange="updateQuestionType()">
-				<option>Text</option>
-				<option>Multiple Choice</option>
-			</select>
+			<label><input type="radio" value="Text" name="questionType" id="questionType" onchange="updateQuestionType()" checked>Text</label>
+			<label><input type="radio" value="Multiple Choice" name="questionType" id="questionType" onchange="updateQuestionType()">Multiple Choice</label>
 			<br/><br/>
 			<div id="answerTypeDiv"></div>
 		</td>

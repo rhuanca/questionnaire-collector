@@ -4,11 +4,64 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/ui/themes/base/jquery-ui.css'>
+    
+    <style>
+		body {
+			margin:0;
+			padding:20px 40px;
+			background:#fff;
+			font:13px Arial, Helvetica, sans-serif;
+			color:#333;
+			line-height:180%;
+		}
+		h1{
+			font-size:180%;
+			font-weight:normal;
+			}
+		h2{
+			font-size:160%;
+			font-weight:normal;
+			}	
+		h3{
+			font-size:140%;
+			font-weight:normal;
+			}	
+		pre{
+			display:block;
+			font:12px "Courier New", Courier, monospace;
+			padding:10px;
+			border:1px solid #bae2f0;
+			background:#e3f4f9;	
+			margin:.5em 0;
+			width:500px;
+			}		
+		.clear{
+			clear:both;
+			}	
+		img{border:none;}
+		
+		/* notification styles */
+		
+		#easyNotification{
+			padding:5px 10px;
+			background:#fffed0;
+			border:1px solid #d4d287;
+			color:#333;
+			position:relative;
+			}
+		#easyNotification span{
+			float:right;
+			cursor:pointer;
+			}	
+		
+		</style>
 
     <script type="text/javascript" src="javascripts/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="ui/jquery-ui-1.9.1.custom.min.js"></script>
+	<script type="text/javascript" src="javascripts/utils.js"></script>
+	<script type="text/javascript" src="javascripts/easy.notification.js"></script>
 
-    <script>
+    <script>    
 	    $(function() {
 	        $( "#tabs" ).tabs({
 	            beforeLoad: function( event, ui ) {
@@ -21,7 +74,6 @@
 	        });
 	    });
     </script>
-    
   </head>
   <body>
     <h1><%= title %></h1>
