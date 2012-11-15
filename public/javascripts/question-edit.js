@@ -1,7 +1,14 @@
-function appendAnswerText(){
-	$('#answerTypeDiv').append("<textarea rows='3' cols='103' disabled='true'>To be filled by the applicant.</textarea><br/>");
-	$('#answerTypeDiv').append("<textarea name='textAnswer' id='textAnswer' rows='5' cols='103' disabled='true'></textarea>");
-	$('#textAnswer').wysiwyg();
+function showTextAnswer(){
+	$("#answerMultipleChoiseTypeDiv").hide();
+	$("#answerTextTypeDiv").show();
+}
+
+function showMultipleChoiseAnswer(){
+	$("#answerTextTypeDiv").hide();
+	$("#answerMultipleChoiseTypeDiv").show();
+	if($("#answerMultipleChoiseTypeDiv").is(":empty")) {
+		appendAnswerOption();
+	}
 }
 
 function appendAnswerOption(){
@@ -9,24 +16,29 @@ function appendAnswerOption(){
 	var optionInput = "Option: <input name='answerOption-"+guid+"' /> <label><input name='iscorrect' id='isAnswerOptionCorrect-"+guid+"' type='radio'/> The answer?</label>";
 	var addOptionLink = "<a id='addAnswertOption' href='#'>Add Option</a>";
 	$("#addAnswertOption").remove();
-	$('#answerTypeDiv').append(optionInput+"&nbsp;&nbsp;"+addOptionLink+"<br/>");
+	$('#answerMultipleChoiseTypeDiv').append(optionInput+"&nbsp;&nbsp;"+addOptionLink+"<br/>");
 	$("#addAnswertOption").click(appendAnswerOption);
 }
 
 function updateQuestionType() {
 	var answerType = $('input[name=questionType]:checked').val();
-	$('#answerTypeDiv').html("");
+	$('#answerTypeDiv').empty();
 
 	if(answerType == "Text") {
-		appendAnswerText();
+		showTextAnswer();
 	} else if(answerType == "Multiple Choice") {
-		appendAnswerOption();
+		showMultipleChoiseAnswer();
 	} 
 }
 
 function focusQuestionField(){
 	// $('#wysiwyg').wysiwyg('focus'); does not work
-	$("#textQuestionIFrame")[0].contentWindow.focus();
+	// $("iframe")[0].focus();
+	//$('#textQuestion').focus();
+	//adding on focus handler
+	//CKEDITOR.instances.ckeditor.on('focus', function(){
+	//console.log('focus')
+	//});
 }
 
 function updateId(data){
@@ -53,7 +65,6 @@ function submitQuestion() {
 			isCorrect:isCorrect
 		};
 	}
-	
 	// build data for ajax request
 	var data = {};
 	data.questionText = question;
@@ -64,7 +75,6 @@ function submitQuestion() {
 	else if(type=="Multiple Choice") {
 		data.answerOptions = answerOptions;
 	}
-	
 	if(questionId=="") {
 		// insert
 		$.ajax({
@@ -108,8 +118,9 @@ $(function() {
 	//
 	// Intialize GUI
 	//
-    $('#textQuestion').wysiwyg();
-	  
+	$( '#textQuestion' ).ckeditor();
+	$( '#textAnswer' ).ckeditor();
+	
 	//
 	// Intialize Events
 	//

@@ -28,8 +28,6 @@ exports.update = function(req, res){
 	res.send(question);
 };
 
-
-
 /*
 Some scripts
 -------------

@@ -1,6 +1,7 @@
 
-<link rel="stylesheet" href="/jwysiwyg/jquery.wysiwyg.css" type="text/css" />
-<script type="text/javascript" src="jwysiwyg/jquery.wysiwyg.js"></script>
+
+<!-- link rel="stylesheet" href="/jwysiwyg/jquery.wysiwyg.css" type="text/css" /-->
+<!-- script type="text/javascript" src="jwysiwyg/jquery.wysiwyg.js"></script-->
 
 <style>
 	.question-label 
@@ -33,7 +34,11 @@
 			<label><input type="radio" value="Text" name="questionType" id="questionType" onchange="updateQuestionType()" checked>Text</label>
 			<label><input type="radio" value="Multiple Choice" name="questionType" id="questionType" onchange="updateQuestionType()">Multiple Choice</label>
 			<br/><br/>
-			<div id="answerTypeDiv"></div>
+			<div id="answerTextTypeDiv" style="visibility: false">
+				<textarea rows='3' cols='103' disabled='true'>To be filled by the applicant.</textarea><br/>
+				<textarea name='textAnswer' id='textAnswer' rows='5' cols='103'></textarea>
+			</div>
+			<div id="answerMultipleChoiseTypeDiv" style="visibility: false"></div>
 		</td>
 	</tr>
 	<tr>
@@ -61,6 +66,3 @@
 </table>
 <br/>
 <a id="add-question" href="#">Submit Question</a>
-
-
-
