@@ -1,0 +1,66 @@
+
+<link rel="stylesheet" href="/jwysiwyg/jquery.wysiwyg.css" type="text/css" />
+<script type="text/javascript" src="jwysiwyg/jquery.wysiwyg.js"></script>
+
+<style>
+	.question-label 
+	{
+		vertical-align: top;
+	}
+</style>
+<script type="text/javascript" src="javascripts/question-edit.js"> </script>
+<table>
+	<tr>
+		<td class="question-label"><b>Id</b></td>
+		<td>
+			<div>
+				<div id="questionIdText">Not Available</div>
+				<input name="questionId" value="" type="hidden"/>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="question-label"><b>Question</b></td>
+		<td>
+			<div>
+				<textarea name="textQuestion" id="textQuestion" rows="5" cols="103"></textarea>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="question-label"><b>Answer</b></td>
+		<td>
+			<label><input type="radio" value="Text" name="questionType" id="questionType" onchange="updateQuestionType()" checked>Text</label>
+			<label><input type="radio" value="Multiple Choice" name="questionType" id="questionType" onchange="updateQuestionType()">Multiple Choice</label>
+			<br/><br/>
+			<div id="answerTypeDiv"></div>
+		</td>
+	</tr>
+	<tr>
+		<td class="question-label"><b>Area</b></td>
+		<td>
+			<select name="questionArea">
+				<option>General Programming</option>
+				<option>Desktop Development</option>
+				<option>Web Development</option>
+				<option>Mobile Development</option>
+				<option>Database</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="question-label"><b>Level</b></td>
+		<td>
+			<select name="questionLevel">
+				<option>Basic</option>
+				<option>Intermediate</option>
+				<option>Advanced</option>
+			</select>
+		</td>
+	</tr>
+</table>
+<br/>
+<a id="add-question" href="#">Submit Question</a>
+
+
+
