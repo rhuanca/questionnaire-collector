@@ -121,6 +121,17 @@ $(function() {
 	$( '#textQuestion' ).ckeditor();
 	$( '#textAnswer' ).ckeditor();
 	
+	// update
+	$.ajax({
+		type: "GET",
+		url: "/authors/names",
+		success: function(data) {
+			$( "#author" ).autocomplete({
+		        source: data
+		    });
+		}
+	});
+	
 	//
 	// Intialize Events
 	//

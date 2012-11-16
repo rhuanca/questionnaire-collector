@@ -3,6 +3,7 @@
  * collect.
  */
 
+
 exports.edit = function(req, res){
 	res.render('question-edit', { data: 'data' });
 };
@@ -35,5 +36,8 @@ exports.update = function(req, res){
 Some scripts
 -------------
 db.counters.insert({ _id:'questions',next:0})
+db.createCollection("authors");
+db.authors.insert({name:'renan',cookie:''});
+
 supervisor app.js 
 */

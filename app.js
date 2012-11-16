@@ -6,6 +6,7 @@
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
+  , authors = require('./routes/authors')
   , questions = require('./routes/questions')
   , http = require('http')
   , path = require('path');
@@ -33,6 +34,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
+app.get('/authors/names', authors.names);
 app.get('/questions/edit', questions.edit);
 app.post('/questions/add', questions.add);
 app.post('/questions/update/:id', questions.update);
