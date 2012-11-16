@@ -12,6 +12,10 @@ function storeAuthor(authorName){
 	});
 }
 
+exports.view = function(req, res){
+	res.render('question-view', { questionId: req.params.id });
+};
+
 exports.edit = function(req, res){
 	res.render('question-edit', { data: 'data' });
 };
@@ -44,6 +48,14 @@ exports.update = function(req, res){
 	
 	questions.findOne({'_id': parseInt(req.params.id, 10)}, {}, function(err, doc){
 		res.send(question);
+	});
+};
+
+exports.read = function(req, res){
+	var questions = db.collection("questions");
+	console.log("to read = " + req.params.id);
+	questions.findOne({'_id': parseInt(req.params.id, 10)}, {}, function(err, doc){
+		res.send(doc);
 	});
 };
 

@@ -47,6 +47,14 @@ function updateId(data){
 	
 }
 
+function loadQuestion(question) {
+	$("#questionIdText").html(question._id);
+	$("input[name=questionId]").val(question._id);
+	$("#textQuestion").val( question.questionText );
+	
+	
+}
+
 function submitQuestion() {
 	// get parameter values.
 	var questionId = $("input[name=questionId]").val();
@@ -122,8 +130,9 @@ function submitQuestion() {
 }
 
 $(function() {
+	
 	//
-	// Intialize GUI
+	// Initialize GUI
 	//
 	$( '#textQuestion' ).ckeditor();
 	$( '#textAnswer' ).ckeditor();
@@ -146,7 +155,25 @@ $(function() {
 		submitQuestion();
 		return false;
 	});
-	 
+	
+	var editedQuestionId = getCookie("questionId");
+	if(editedQuestionId!=null && editedQuestionId.trim()!='') {
+		setCookie('questionId', '', null, '\\', null, null);
+		$.ajax({
+			type: "POST",
+			url: "/questions/read/"+editedQuestionId,
+			dataType: "json",
+			success: function(data) {
+				loadQuestion(data);
+			},
+			error: function(err) {
+				var msg = 'Status: ' + err.status + ': ' + err.responseText;
+				alert(msg);
+				focusQuestionField();
+			}
+		});	
+	} 
+	
 	// Init focus for page
 	focusQuestionField();
 	updateQuestionType();

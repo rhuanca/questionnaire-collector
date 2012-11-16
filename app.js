@@ -36,6 +36,8 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/authors/names', authors.names);
 app.get('/questions/edit', questions.edit);
+app.get('/questions/view/:id', questions.view);
+app.post('/questions/read/:id', questions.read);
 app.post('/questions/add', questions.add);
 app.post('/questions/update/:id', questions.update);
 
