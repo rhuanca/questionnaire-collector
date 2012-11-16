@@ -74,6 +74,10 @@ function loadQuestion(question) {
 			appendAnswerOptionValue(option.textOption, option.isCorrect);
 		}
 	} 
+	
+	$('select[name=questionArea]').val(question.questionArea);
+	$('select[name=questionLevel]').val(question.questionLevel);
+	$('input[name=questionAuthor]').val(question.questionAuthor);
 }
 
 function submitQuestion() {
