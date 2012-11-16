@@ -24,8 +24,11 @@ exports.add = function(req, res){
 exports.update = function(req, res){
 	var question = req.body;
 	var questions = db.collection("questions");
-	questions.update({'_id': req.params.id}, {'$set':question});
-	res.send(question);
+	console.log("to update = " + req.params.id);
+	questions.update({'_id': parseInt(req.params.id, 10)}, question);
+	questions.findOne({'_id': parseInt(req.params.id, 10)}, {}, function(err, doc){
+		res.send(question);
+	});
 };
 
 /*
