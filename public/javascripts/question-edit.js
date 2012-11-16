@@ -65,6 +65,9 @@ function submitQuestion() {
 			isCorrect:isCorrect
 		};
 	}
+	var questionArea = $('select[name=questionArea]').val();
+	var questionLevel = $('select[name=questionLevel]').val();
+	var questionAuthor = $('input[name=questionAuthor]').val();
 	// build data for ajax request
 	var data = {};
 	data.questionText = question;
@@ -75,6 +78,10 @@ function submitQuestion() {
 	else if(type=="Multiple Choice") {
 		data.answerOptions = answerOptions;
 	}
+	data.questionArea = questionArea;
+	data.questionLevel = questionLevel;
+	data.questionAuthor = questionAuthor;
+	
 	if(questionId=="") {
 		// insert
 		$.ajax({
@@ -126,7 +133,7 @@ $(function() {
 		type: "GET",
 		url: "/authors/names",
 		success: function(data) {
-			$( "#author" ).autocomplete({
+			$( "#questionAuthor" ).autocomplete({
 		        source: data
 		    });
 		}
