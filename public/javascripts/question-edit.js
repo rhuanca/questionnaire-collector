@@ -20,6 +20,16 @@ function appendAnswerOption(){
 	$("#addAnswertOption").click(appendAnswerOption);
 }
 
+function appendAnswerOptionValue(textOption, isCorrect){
+	var guid = GUID();
+	var optionInput = "Option: <input name='answerOption-"+guid+"' value='"+textOption+"'/> <label><input name='iscorrect' id='isAnswerOptionCorrect-"+guid+"' type='radio' "+(isCorrect?"checked":"")+"/> The answer?</label>";
+	var addOptionLink = "<a id='addAnswertOption' href='#'>Add Option</a>";
+	$("#addAnswertOption").remove();
+	$('#answerMultipleChoiseTypeDiv').append(optionInput+"&nbsp;&nbsp;"+addOptionLink+"<br/>");
+	$("#addAnswertOption").click(appendAnswerOption);
+}
+
+
 function updateQuestionType() {
 	var answerType = $('input[name=questionType]:checked').val();
 	$('#answerTypeDiv').empty();
@@ -51,8 +61,19 @@ function loadQuestion(question) {
 	$("#questionIdText").html(question._id);
 	$("input[name=questionId]").val(question._id);
 	$("#textQuestion").val( question.questionText );
-	
-	
+	if(question.questionType == 'Text') {
+		$("input[name=questionType][value='Text']").attr("checked",true);
+		showTextAnswer();
+		$("#textAnswer").val( question.textAnswer );
+	} else if(question.questionType == 'Multiple Choice') {
+		$("input[name=questionType][value='Multiple Choice']").attr("checked",true);
+		showMultipleChoiseAnswer();
+		$('#answerMultipleChoiseTypeDiv').empty();
+		for(var i=0; i < question.answerOptions.length; i++) {
+			var option = question.answerOptions[i];
+			appendAnswerOptionValue(option.textOption, option.isCorrect);
+		}
+	} 
 }
 
 function submitQuestion() {
